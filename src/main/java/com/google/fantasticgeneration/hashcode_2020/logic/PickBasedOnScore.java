@@ -3,8 +3,12 @@ package com.google.fantasticgeneration.hashcode_2020.logic;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.Status;
 
-public interface PickNextLibrary {
+public class PickBasedOnScore implements PickNextLibrary {
 
-	public Library pickNext(Status status, int curTime);
+	@Override
+	public Library pickNext(Status status, int curTime) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

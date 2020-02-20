@@ -11,10 +11,11 @@ public class ProblemSolver {
 
 	public SolutionContainer solve(ProblemContainer problem) {
 		// TODO
-		final SolutionContainer solution = new SolutionContainer();
+		// final SolutionContainer solution = new SolutionContainer();
 		// set the score
-		solution.setScore(0);
-		return solution;
+		// solution.setScore(0);
+		// return solution;
+		return null;
 	}
 
 	public static void main(String[] args) {
