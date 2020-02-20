@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class Library {
+public class Library implements Comparable<Library> {
 	int id;
 	List<Book> books;
 	int signupTime;
@@ -89,5 +89,16 @@ public class Library {
 	public String toString() {
 		return "Library{" + "id=" + id + ", books=" + books + ", signupTime=" + signupTime + ", parallelBooks="
 				+ parallelBooks + ", signupDay=" + signupDay + ", deliveredBooks=" + deliveredBooks + '}';
+	}
+
+	@Override
+	public int compareTo(Library o) {
+		if ((o.signupDay == -1) && (this.signupDay == -1)) {
+			return this.id - o.id;
+		}
+		if ((o.signupDay != -1) && (this.signupDay != -1)) {
+			return this.signupDay - o.signupDay;
+		}
+		return this.signupDay == -1 ? 1 : -1;
 	}
 }
