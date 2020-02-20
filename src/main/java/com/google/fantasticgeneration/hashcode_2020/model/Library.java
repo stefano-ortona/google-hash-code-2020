@@ -1,6 +1,7 @@
 package com.google.fantasticgeneration.hashcode_2020.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -75,6 +76,7 @@ public class Library implements Comparable<Library> {
 		final List<Book> available = new ArrayList<>();
 		available.addAll(this.books);
 		available.removeAll(alreadyDelivered);
+		Collections.sort(available);
 		final List<Book> potentialDeliver = new LinkedList<>();
 		int bookIndex = 0;
 		for (int i = curTime; (i < maxTime) && (bookIndex < available.size()); i++) {

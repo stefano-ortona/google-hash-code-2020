@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.fantasticgeneration.hashcode_2020.model.Book;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.Status;
 
 public class PickBasedOnScore implements PickNextLibrary {
+
+	final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public Library pickNext(Status status, int curTime) {
@@ -27,6 +32,7 @@ public class PickBasedOnScore implements PickNextLibrary {
 				}
 			}
 		}
+		LOG.info("At time '{}' we picked library '{}' with score '{}'", curTime, bestLibrary, bestScore);
 		return bestLibrary;
 	}
 
