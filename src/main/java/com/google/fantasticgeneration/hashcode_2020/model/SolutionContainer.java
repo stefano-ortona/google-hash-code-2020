@@ -21,6 +21,14 @@ public class SolutionContainer {
 	public void setScore(int score) {
 		this.score = score;
 	}
+	
+	public List<Library> getLibraries() {
+		return this.libraries;
+	}
+	
+	public void setLibraries(List<Library> libs) {
+		this.libraries = libs;
+	}
 
 	@Override
 	public String toString() {
