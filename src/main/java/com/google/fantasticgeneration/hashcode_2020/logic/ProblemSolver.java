@@ -15,10 +15,12 @@ import com.google.fantasticgeneration.hashcode_2020.model.Status;
 public class ProblemSolver {
 	private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-	private static PickNextLibrary LIBRARY_PICKER = new PickBasedOnScoreWithDelta();
+	private static PickNextLibrary LIBRARY_PICKER = null;
 
 	public SolutionContainer solve(ProblemContainer problem) {
 		final Status status = problem.status;
+
+		LIBRARY_PICKER = new PickBasedOnScoreWithDelta(status.getLibraries(), status);
 
 		for (int currentTime = 0; currentTime < status.getMaxDays();) {
 
