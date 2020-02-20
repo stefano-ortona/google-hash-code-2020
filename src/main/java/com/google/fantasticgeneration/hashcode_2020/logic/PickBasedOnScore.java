@@ -32,6 +32,7 @@ public class PickBasedOnScore implements PickNextLibrary {
 				}
 			}
 		}
+		LOG.info("At time '{}' we picked library '{}' with score '{}'", curTime, bestLibrary, bestScore);
 		return bestLibrary;
 	}
 
