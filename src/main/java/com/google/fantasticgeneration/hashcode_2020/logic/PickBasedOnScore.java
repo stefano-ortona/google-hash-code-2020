@@ -19,14 +19,14 @@ public class PickBasedOnScore implements PickNextLibrary {
 	public Library pickNext(Status status, int curTime) {
 		final List<Library> available = status.getLibraries().stream().filter(l -> l.getSignupDay() == -1)
 				.collect(Collectors.toList());
-		int bestScore = -1;
+		int bestScore = 0;
 		Library bestLibrary = null;
 		for (final Library one : available) {
 			final int curScore = computeScore(one, status.getDeliveredBooks(), curTime, status.getMaxDays());
 			if (curScore > bestScore) {
 				bestScore = curScore;
 				bestLibrary = one;
-			} else if (curScore == bestScore) {
+			} else if ((curScore > 0) && (curScore == bestScore)) {
 				if (one.getSignupTime() < bestLibrary.getSignupTime()) {
 					bestLibrary = one;
 				}
