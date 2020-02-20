@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PickBasedOnScorePesata extends PickNextLibrary {
+public class PickBasedOnScoreWithDelta extends PickNextLibrary {
 
 	final Logger LOG = LoggerFactory.getLogger(getClass());
+
+	public static int DELTA_SCORE = 100;
 
 	@Override
 	public Library pickNext(Status status, int curTime) {
@@ -23,10 +25,10 @@ public class PickBasedOnScorePesata extends PickNextLibrary {
 
 		for (final Library one : available) {
 			final int curScore = computeScore(one, status.getDeliveredBooks(), curTime, status.getMaxDays());
-			if (curScore > bestScore) {
+			if (Math.abs(curScore - bestScore) > DELTA_SCORE) {
 				bestScore = curScore;
 				bestLibrary = one;
-			} else if (curScore == bestScore) {
+			} else {
 				if (one.getSignupTime() < bestLibrary.getSignupTime()) {
 					bestLibrary = one;
 				}
