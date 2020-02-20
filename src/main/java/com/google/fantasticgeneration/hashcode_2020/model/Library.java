@@ -1,6 +1,9 @@
 package com.google.fantasticgeneration.hashcode_2020.model;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class Library {
 	int id;
@@ -67,15 +70,24 @@ public class Library {
 		this.parallelBooks = parallelBooks;
 	}
 
+	public List<Book> deliver(Set<Book> alreadyDelivered, int curTime, int maxTime) {
+		curTime += this.signupTime;
+		final List<Book> available = new ArrayList<>();
+		available.addAll(this.books);
+		available.removeAll(alreadyDelivered);
+		final List<Book> potentialDeliver = new LinkedList<>();
+		int bookIndex = 0;
+		for (int i = curTime; (i < maxTime) && (bookIndex < available.size()); i++) {
+			for (int j = 0; (j < this.parallelBooks) && (bookIndex < available.size()); j++) {
+				potentialDeliver.add(available.get(bookIndex++));
+			}
+		}
+		return potentialDeliver;
+	}
+
 	@Override
 	public String toString() {
-		return "Library{" +
-				"id=" + id +
-				", books=" + books +
-				", signupTime=" + signupTime +
-				", parallelBooks=" + parallelBooks +
-				", signupDay=" + signupDay +
-				", deliveredBooks=" + deliveredBooks +
-				'}';
+		return "Library{" + "id=" + id + ", books=" + books + ", signupTime=" + signupTime + ", parallelBooks="
+				+ parallelBooks + ", signupDay=" + signupDay + ", deliveredBooks=" + deliveredBooks + '}';
 	}
 }
