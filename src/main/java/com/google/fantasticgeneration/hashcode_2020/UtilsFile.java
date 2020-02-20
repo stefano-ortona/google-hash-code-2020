@@ -1,4 +1,5 @@
 package com.google.fantasticgeneration.hashcode_2020;
+import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.ProblemContainer;
 import com.google.fantasticgeneration.hashcode_2020.model.Book;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UtilsBalloons {
+public class UtilsFile {
 
     /* If file structure is preserved (i.e. first line header, rest of the file data)
         Edit this file as following:
@@ -24,11 +25,38 @@ public class UtilsBalloons {
     // 1. define type of header items and data items
     private int[] firstRow;
     private int[] secondRow;
+    private int bookAmount;
+    private int librariesAmount;
+    private int availableTime;
     private ProblemContainer problemContainer;
-    //private List<Book> books;
-
+    private List<Book> books;
+    private List<Library> libraries;
 
     // 2. generate setters and getters for header and data
+
+    public int getBookAmount() {
+        return bookAmount;
+    }
+
+    public void setBookAmount(int bookAmount) {
+        this.bookAmount = bookAmount;
+    }
+
+    public int getLibrariesAmount() {
+        return librariesAmount;
+    }
+
+    public void setLibrariesAmount(int librariesAmount) {
+        this.librariesAmount = librariesAmount;
+    }
+
+    public int getAvailableTime() {
+        return availableTime;
+    }
+
+    public void setAvailableTime(int availableTime) {
+        this.availableTime = availableTime;
+    }
 
     public int[] getFirstRow() {
         return firstRow;
@@ -46,106 +74,26 @@ public class UtilsBalloons {
         this.secondRow = secondRow;
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
-    public int getHeights() {
-        return heights;
-    }
-
-    public void setHeights(int heights) {
-        this.heights = heights;
-    }
-
-    public int getTargetCellAmount() {
-        return targetCellAmount;
-    }
-
-    public void setTargetCellAmount(int targetCellAmount) {
-        this.targetCellAmount = targetCellAmount;
-    }
-
-    public int getCoveredRadius() {
-        return coveredRadius;
-    }
-
-    public void setCoveredRadius(int coveredRadius) {
-        this.coveredRadius = coveredRadius;
-    }
-
-    public int getAvailableBalloons() {
-        return availableBalloons;
-    }
-
-    public void setAvailableBalloons(int availableBalloons) {
-        this.availableBalloons = availableBalloons;
-    }
-
-    public int getTurns() {
-        return turns;
-    }
-
-    public void setTurns(int turns) {
-        this.turns = turns;
-    }
-
-    public int getInitialCellX() {
-        return initialCellX;
-    }
-
-    public void setInitialCellX(int initialCellX) {
-        this.initialCellX = initialCellX;
-    }
-
-    public int getInitialCellY() {
-        return initialCellY;
-    }
-
-    public void setInitialCellY(int initialCellY) {
-        this.initialCellY = initialCellY;
-    }
-
-
     public ProblemContainer getProblemContainer() {
         return problemContainer;
     }
 
-    public boolean[][] getGrid() {
-        return grid;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setGrid(boolean[][] grid) {
-        this.grid = grid;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
-    public List<Pair[][]> getWinds() {
-        return winds;
+    public List<Library> getLibraries() {
+        return libraries;
     }
 
-    public void setWinds(List<Pair[][]> winds) {
-        this.winds = winds;
+    public void setLibraries(List<Library> libraries) {
+        this.libraries = libraries;
     }
 
-    public List<Baloon> getBaloons() {
-        return baloons;
-    }
-
-    public void setBaloons(List<Baloon> baloons) {
-        this.baloons = baloons;
-    }
 
     //3. define logic of createHeader() and createData()
 
@@ -155,105 +103,113 @@ public class UtilsBalloons {
         int[] firstLineConverted = convertArrayOfStringToArrayOfInt(firstLineSplit);
 
         // First row
-        this.setRow(firstLineConverted[0]);
-        this.setColumns(firstLineConverted[1]);
-        this.setHeights(firstLineConverted[2]);
+        this.setBookAmount(firstLineConverted[0]);
+        this.setLibrariesAmount(firstLineConverted[1]);
+        this.setAvailableTime(firstLineConverted[2]);
 
         // Second row
         String secondLine = this.file[1];
         String[] secondLineSplit = splitString(secondLine, " ");
         int[] secondLineConverted = convertArrayOfStringToArrayOfInt(secondLineSplit);
 
-        this.setTargetCellAmount(secondLineConverted[0]);
-        this.setCoveredRadius(secondLineConverted[1]);
-        this.setAvailableBalloons(secondLineConverted[2]);
-        this.setTurns(secondLineConverted[3]);
-
-        // Third row
-        String thirdRow = this.file[2];
-        String[] thirdRowSplit = splitString(thirdRow, " ");
-        int[] thirdRowConverted = convertArrayOfStringToArrayOfInt(thirdRowSplit);
-
-        this.setInitialCellX(thirdRowConverted[0]);
-        this.setInitialCellY(thirdRowConverted[1]);
-
-        // Init Grid
-        grid = new boolean[this.getRow()][this.getColumns()];
-        for (int r = 0; r < this.getRow(); r ++){
-            for (int c = 0; c < this.getColumns(); c ++){
-                // Init all to false
-                grid[r][c] = false;
-            }
-        }
-        // mark target cells to true
-        for (int i = 0; i<this.getTargetCellAmount(); i++){
-            // 3 fixed row
-            String currentRow = this.file[2 + 1 + i];
-            String[] currentRowSplit = splitString(currentRow, " ");
-            int[] currentRowConverted = convertArrayOfStringToArrayOfInt(currentRowSplit);
-            // Set to true
-            grid[currentRowConverted[0]][currentRowConverted[1]] = true;
-        }
-        this.setGrid(grid);
-
-        // Init winds - List<Pair[][]> winds;
-        int index = 2 + this.getTargetCellAmount();
-        winds = new ArrayList<>();
-
-        for (int j = 0; j< this.getHeights(); j++){
-            Pair[][] matrix = new Pair[this.getColumns()][this.getRow()];
-            for (int k = 0; k < this.getRow(); k++){
-                index++;
-                String currentWind = this.file[index];
-                String[] currentWindSplit = splitString(currentWind, " ");
-                int[] currentWindConverted = convertArrayOfStringToArrayOfInt(currentWindSplit);
-
-                for (int p = 0; p < currentWindConverted.length; p++){
-                    Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
-                    int columnIndex = p / 2;
-                    matrix[columnIndex][k] = pa;
-//                    System.out.println(columnIndex + " x");
-//                    System.out.println(k + " y");
-//                    System.out.println(pa.toString());
-//                    System.out.println("-");
-                    p++;
-                }
-            }
-
-            //System.out.println("------- Layer " + j);
-            winds.add(matrix);
-        }
-        this.setWinds(winds);
-
-        //System.out.println(this.getWinds().get());
-
-        // Init balloons
-        baloons = new ArrayList<>();
-        for (int b = 0; b < this.getAvailableBalloons(); b ++){
-            //int id, int row, int column, int height
-            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
-            baloons.add(bal);
+        books = new ArrayList<>();
+        for (int i = 0; i < this.getBookAmount(); i ++){
+            Book b = new Book(i, secondLineConverted[i]);
+            books.add(b);
         }
 
-        this.setBaloons(baloons);
-
-    }
-
-    public void setProblemContainer(ProblemContainer problemContainer) {
-        this.problemContainer = problemContainer;
-    }
-
-    public void createProblemContainer() {
-        Status status = new  Status(this.getBaloons(), this.getGrid(), this.getHeights(), this.getTurns(), this.getWinds(), this.getCoveredRadius());
-        problemContainer = new ProblemContainer(status);
-        this.setProblemContainer(problemContainer);
+        this.setBooks(books);
+//
+//        this.setTargetCellAmount(secondLineConverted[0]);
+//        this.setCoveredRadius(secondLineConverted[1]);
+//        this.setAvailableBalloons(secondLineConverted[2]);
+//        this.setTurns(secondLineConverted[3]);
+//
+//        // Third row
+//        String thirdRow = this.file[2];
+//        String[] thirdRowSplit = splitString(thirdRow, " ");
+//        int[] thirdRowConverted = convertArrayOfStringToArrayOfInt(thirdRowSplit);
+//
+//        this.setInitialCellX(thirdRowConverted[0]);
+//        this.setInitialCellY(thirdRowConverted[1]);
+//
+//        // Init Grid
+//        grid = new boolean[this.getRow()][this.getColumns()];
+//        for (int r = 0; r < this.getRow(); r ++){
+//            for (int c = 0; c < this.getColumns(); c ++){
+//                // Init all to false
+//                grid[r][c] = false;
+//            }
+//        }
+//        // mark target cells to true
+//        for (int i = 0; i<this.getTargetCellAmount(); i++){
+//            // 3 fixed row
+//            String currentRow = this.file[2 + 1 + i];
+//            String[] currentRowSplit = splitString(currentRow, " ");
+//            int[] currentRowConverted = convertArrayOfStringToArrayOfInt(currentRowSplit);
+//            // Set to true
+//            grid[currentRowConverted[0]][currentRowConverted[1]] = true;
+//        }
+//        this.setGrid(grid);
+//
+//        // Init winds - List<Pair[][]> winds;
+//        int index = 2 + this.getTargetCellAmount();
+//        winds = new ArrayList<>();
+//
+//        for (int j = 0; j< this.getHeights(); j++){
+//            Pair[][] matrix = new Pair[this.getColumns()][this.getRow()];
+//            for (int k = 0; k < this.getRow(); k++){
+//                index++;
+//                String currentWind = this.file[index];
+//                String[] currentWindSplit = splitString(currentWind, " ");
+//                int[] currentWindConverted = convertArrayOfStringToArrayOfInt(currentWindSplit);
+//
+//                for (int p = 0; p < currentWindConverted.length; p++){
+//                    Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
+//                    int columnIndex = p / 2;
+//                    matrix[columnIndex][k] = pa;
+////                    System.out.println(columnIndex + " x");
+////                    System.out.println(k + " y");
+////                    System.out.println(pa.toString());
+////                    System.out.println("-");
+//                    p++;
+//                }
+//            }
+//
+//            //System.out.println("------- Layer " + j);
+//            winds.add(matrix);
+//        }
+//        this.setWinds(winds);
+//
+//        //System.out.println(this.getWinds().get());
+//
+//        // Init balloons
+//        baloons = new ArrayList<>();
+//        for (int b = 0; b < this.getAvailableBalloons(); b ++){
+//            //int id, int row, int column, int height
+//            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
+//            baloons.add(bal);
+//        }
+//
+//        this.setBaloons(baloons);
+//
+//    }
+//
+//    public void setProblemContainer(ProblemContainer problemContainer) {
+//        this.problemContainer = problemContainer;
+//    }
+//
+//    public void createProblemContainer() {
+//        Status status = new  Status(this.getBaloons(), this.getGrid(), this.getHeights(), this.getTurns(), this.getWinds(), this.getCoveredRadius());
+//        problemContainer = new ProblemContainer(status);
+//        this.setProblemContainer(problemContainer);
     }
 
 
     // ====== Do not change below here
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/final_2015/";
+    //private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
+    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/final_2020/";
     private String[] file;
 
     public void setFile(String[] file) {
@@ -265,20 +221,20 @@ public class UtilsBalloons {
     }
 
     // Constructor
-    public UtilsBalloons(String filepath) {
+    public UtilsFile(String filepath) {
 
         try {
             File file = new File(RESOURCE_PATH + filepath);
             String absolutePath = file.getAbsolutePath();
 
-            LOGGER.info("File absolute path:" + absolutePath);
+            //LOGGER.info("File absolute path:" + absolutePath);
             readFile(absolutePath);
 
             createModels();
             //LOGGER.info("Header creation: done");
 
             //LOGGER.info("Data creation: start");
-            createProblemContainer();
+            //createProblemContainer();
             //LOGGER.info("Data creation: done");
         } catch (Exception e) {
             e.printStackTrace();
