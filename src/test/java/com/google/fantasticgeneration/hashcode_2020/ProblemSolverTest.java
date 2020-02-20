@@ -84,7 +84,8 @@ public class ProblemSolverTest {
 		LOG.info("Second test is starting");
 	}
 
-	private final String[] testFiles = new String[] { "a_example.txt", "b_read_on.txt", "", "", "" };
+	private final String[] testFiles = new String[] { "a_example.txt", "b_read_on.txt", "c_incunabula.txt",
+			"d_tough_choices.txt", "e_so_many_books.txt", "f_libraries_of_the_world.txt" };
 
 	@Test
 	public void firstFile() throws IOException {
@@ -134,6 +135,17 @@ public class ProblemSolverTest {
 	public void fifthFile() throws IOException {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[4];
+		final ProblemContainer c = reader.readProblem(file);
+		final SolutionContainer sC = SOLVER.solve(c);
+		final ProblemWriter wC = new ProblemWriter();
+		wC.writeProblem(file.replaceAll("in", "out"), sC);
+		LOG.info("Final score for file '{}' is '{}'", file, sC.getScore());
+	}
+
+	@Test
+	public void sixthFile() throws IOException {
+		final ProblemReader reader = new ProblemReader();
+		final String file = testFiles[5];
 		final ProblemContainer c = reader.readProblem(file);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();

@@ -1,20 +1,19 @@
 package com.google.fantasticgeneration.hashcode_2020.logic;
 
-import com.google.fantasticgeneration.hashcode_2020.model.Book;
-import com.google.fantasticgeneration.hashcode_2020.model.Library;
-import com.google.fantasticgeneration.hashcode_2020.model.Status;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.google.fantasticgeneration.hashcode_2020.model.Library;
+import com.google.fantasticgeneration.hashcode_2020.model.Status;
 
 public class PickBasedOnScoreWithDelta extends PickNextLibrary {
 
 	final Logger LOG = LoggerFactory.getLogger(getClass());
 
-	public static int DELTA_SCORE = 100;
+	public static int DELTA_SCORE = 5;
 
 	@Override
 	public Library pickNext(Status status, int curTime) {
@@ -25,12 +24,10 @@ public class PickBasedOnScoreWithDelta extends PickNextLibrary {
 
 		for (final Library one : available) {
 			final int curScore = computeScore(one, status.getDeliveredBooks(), curTime, status.getMaxDays());
-			if (Math.abs(curScore - bestScore) > DELTA_SCORE) {
-				bestScore = curScore;
-				bestLibrary = one;
-			} else {
-				if (one.getSignupTime() < bestLibrary.getSignupTime()) {
+			if (curScore > 0) {
+				if (isBetter(curScore, bestScore, one, bestLibrary)) {
 					bestLibrary = one;
+					bestScore = curScore;
 				}
 			}
 		}
@@ -38,6 +35,21 @@ public class PickBasedOnScoreWithDelta extends PickNextLibrary {
 		return bestLibrary;
 	}
 
-
+	private boolean isBetter(int curScore, int bestScore, Library l1, Library l2) {
+		if (bestScore == -1) {
+			return true;
+		}
+		if ((curScore > bestScore) && ((curScore - bestScore) > DELTA_SCORE)) {
+			return true;
+		}
+		if ((curScore < bestScore) && ((bestScore - curScore) > DELTA_SCORE)) {
+			return false;
+		}
+		// pick based on singnup tim
+		if (l1.getSignupTime() < l2.getSignupTime()) {
+			return true;
+		}
+		return false;
+	}
 
 }

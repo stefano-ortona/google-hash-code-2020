@@ -15,7 +15,7 @@ import com.google.fantasticgeneration.hashcode_2020.model.Status;
 public class ProblemSolver {
 	private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-	private static PickNextLibrary LIBRARY_PICKER = new PickBasedOnScore();
+	private static PickNextLibrary LIBRARY_PICKER = new PickBasedOnScoreWithDelta();
 
 	public SolutionContainer solve(ProblemContainer problem) {
 		final Status status = problem.status;
