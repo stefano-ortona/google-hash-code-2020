@@ -10,9 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class UtilsFile {
 
@@ -33,6 +31,7 @@ public class UtilsFile {
     private List<Book> books;
     private List<Library> libraries;
     private Status status;
+    private Map<Integer, Book> id2Book;
 
     // 2. generate setters and getters for header and data
 
@@ -123,108 +122,76 @@ public class UtilsFile {
 
         System.out.println("Book amount " + this.getBookAmount());
         System.out.println("Libraries amount " + this.getLibrariesAmount());
-        System.out.println("Available time" + this.getAvailableTime());
+        System.out.println("Available time " + this.getAvailableTime());
 
         System.out.println();
 
-
         // Second row - Books definitions
-        System.out.println("__________________________ Books");
+        System.out.println("______________________________________________ Books");
         String secondLine = this.file[1];
         String[] secondLineSplit = splitString(secondLine, " ");
         int[] secondLineConverted = convertArrayOfStringToArrayOfInt(secondLineSplit);
 
         books = new ArrayList<>();
+        id2Book = new HashMap<>();
         for (int i = 0; i < this.getBookAmount(); i ++){
             Book b = new Book(i, secondLineConverted[i]);
             books.add(b);
+            id2Book.put(i, b);
+            System.out.println("Added book: " + b.toString());
+
+        }
+        this.setBooks(books);
+        System.out.println();
+
+        // Libraries
+        System.out.println("______________________________________________ Libraries");
+        libraries = new ArrayList<>();
+        int index = 1; // two fixed row
+        for (int j = 0; j < this.getLibrariesAmount(); j++){
+
+            // First row: number of books, signupTime, parallelBooks
+            index++;
+            String firstRow = this.file[index];
+            String[] firstRowSplit = splitString(firstRow, " ");
+            int[] firstRowConverted = convertArrayOfStringToArrayOfInt(firstRowSplit);
+            int bookInLibrary = firstRowConverted[0];
+            int librarySignupTime = firstRowConverted[1];
+            int libraryParallelBooks = firstRowConverted[2];
+
+            System.out.println("Library id: " + j);
+            System.out.println("Books in library: " + bookInLibrary);
+            System.out.println("Sign up time: " + librarySignupTime);
+            System.out.println("Parallel books: " + libraryParallelBooks);
+
+            // Second row: book in library
+            index++;
+            String secondRow = this.file[index];
+            String[] secondRowSplit = splitString(secondRow, " ");
+            int[] secondRowSplitConverted = convertArrayOfStringToArrayOfInt(secondRowSplit);
+            List<Book> booksToAdd = new ArrayList<>();
+
+            for (int k = 0; k < bookInLibrary; k ++){
+                int id = secondRowSplitConverted[k];
+                Book tempBook = id2Book.get(id);
+                booksToAdd.add(tempBook);
+                System.out.println("...Adding book: " + tempBook.toString());
+            }
+            // public Library(int id, List<Book> books, int signupTime, int parallelBooks) {
+            Library library = new Library(j, booksToAdd, librarySignupTime, libraryParallelBooks);
+            libraries.add(library);
+
+            System.out.println("Library created: " + library.toString());
+            System.out.println();
         }
 
-        this.setBooks(books);
-//
-//        this.setTargetCellAmount(secondLineConverted[0]);
-//        this.setCoveredRadius(secondLineConverted[1]);
-//        this.setAvailableBalloons(secondLineConverted[2]);
-//        this.setTurns(secondLineConverted[3]);
-//
-//        // Third row
-//        String thirdRow = this.file[2];
-//        String[] thirdRowSplit = splitString(thirdRow, " ");
-//        int[] thirdRowConverted = convertArrayOfStringToArrayOfInt(thirdRowSplit);
-//
-//        this.setInitialCellX(thirdRowConverted[0]);
-//        this.setInitialCellY(thirdRowConverted[1]);
-//
-//        // Init Grid
-//        grid = new boolean[this.getRow()][this.getColumns()];
-//        for (int r = 0; r < this.getRow(); r ++){
-//            for (int c = 0; c < this.getColumns(); c ++){
-//                // Init all to false
-//                grid[r][c] = false;
-//            }
-//        }
-//        // mark target cells to true
-//        for (int i = 0; i<this.getTargetCellAmount(); i++){
-//            // 3 fixed row
-//            String currentRow = this.file[2 + 1 + i];
-//            String[] currentRowSplit = splitString(currentRow, " ");
-//            int[] currentRowConverted = convertArrayOfStringToArrayOfInt(currentRowSplit);
-//            // Set to true
-//            grid[currentRowConverted[0]][currentRowConverted[1]] = true;
-//        }
-//        this.setGrid(grid);
-//
-//        // Init winds - List<Pair[][]> winds;
-//        int index = 2 + this.getTargetCellAmount();
-//        winds = new ArrayList<>();
-//
-//        for (int j = 0; j< this.getHeights(); j++){
-//            Pair[][] matrix = new Pair[this.getColumns()][this.getRow()];
-//            for (int k = 0; k < this.getRow(); k++){
-//                index++;
-//                String currentWind = this.file[index];
-//                String[] currentWindSplit = splitString(currentWind, " ");
-//                int[] currentWindConverted = convertArrayOfStringToArrayOfInt(currentWindSplit);
-//
-//                for (int p = 0; p < currentWindConverted.length; p++){
-//                    Pair pa = new Pair(currentWindConverted[p], currentWindConverted[p + 1]);
-//                    int columnIndex = p / 2;
-//                    matrix[columnIndex][k] = pa;
-////                    System.out.println(columnIndex + " x");
-////                    System.out.println(k + " y");
-////                    System.out.println(pa.toString());
-////                    System.out.println("-");
-//                    p++;
-//                }
-//            }
-//
-//            //System.out.println("------- Layer " + j);
-//            winds.add(matrix);
-//        }
-//        this.setWinds(winds);
-//
-//        //System.out.println(this.getWinds().get());
-//
-//        // Init balloons
-//        baloons = new ArrayList<>();
-//        for (int b = 0; b < this.getAvailableBalloons(); b ++){
-//            //int id, int row, int column, int height
-//            Baloon bal = new Baloon(b, this.getInitialCellX(), this.getInitialCellY(), 0);
-//            baloons.add(bal);
-//        }
-//
-//        this.setBaloons(baloons);
-//
-//    }
-//
-//    public void setProblemContainer(ProblemContainer problemContainer) {
-//        this.problemContainer = problemContainer;
-//    }
-//
-//    public void createProblemContainer() {
-//        Status status = new  Status(this.getBaloons(), this.getGrid(), this.getHeights(), this.getTurns(), this.getWinds(), this.getCoveredRadius());
-//        problemContainer = new ProblemContainer(status);
-//        this.setProblemContainer(problemContainer);
+        // Status
+        System.out.println("______________________________________________ Status");
+        // 	public Status(List<Library> libraries, int maxDays) {
+        status = new Status(libraries, this.getAvailableTime());
+        this.setStatus(status);
+        System.out.println(status.toString());
+
     }
 
 

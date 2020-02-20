@@ -10,8 +10,7 @@ public class ProblemReader {
 
 		UtilsFile fr = new UtilsFile(fileLocation);
 		Status status = fr.getStatus();
-		final ProblemContainer pB = new ProblemContainer(status);
-		return pB;
+		return new ProblemContainer(status);
 	}
 
 }
