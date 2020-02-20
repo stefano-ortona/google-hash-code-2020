@@ -9,20 +9,17 @@ import com.google.fantasticgeneration.hashcode_2020.model.Book;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.Status;
 
-import jdk.internal.jline.internal.Log;
-
 public class PickBasedOnCannotComplete extends PickBasedOnScore {
 
 	@Override
 	public Library pickNext(Status status, int curTime) {
-		final List<Library> all = status.getLibraries().stream()
-				.filter(l -> (l.getSignupDay() == -1))
+		final List<Library> all = status.getLibraries().stream().filter(l -> (l.getSignupDay() == -1))
 				.collect(Collectors.toList());
 		final List<Library> cannotComplete = status.getLibraries().stream()
 				.filter(l -> (l.getSignupDay() == -1)
 						&& !canComplete(l, curTime, status.getMaxDays(), status.getDeliveredBooks()))
 				.collect(Collectors.toList());
-		
+
 		if (cannotComplete.isEmpty()) {
 			return pickBestForScore(all, status, curTime);
 		}
@@ -35,7 +32,7 @@ public class PickBasedOnCannotComplete extends PickBasedOnScore {
 			return pickBestForTime(cannotComplete, status, curTime);
 		}
 		return pickBestForScore(all, status, curTime);
-		
+
 	}
 
 	private Library pickBestForScore(List<Library> available, Status status, int curTime) {
@@ -57,7 +54,7 @@ public class PickBasedOnCannotComplete extends PickBasedOnScore {
 		}
 		return bestLibrary;
 	}
-	
+
 	private Library pickBestForTime(List<Library> available, Status status, int curTime) {
 		int bestTime = Integer.MAX_VALUE;
 		Library bestLibrary = null;
@@ -80,9 +77,6 @@ public class PickBasedOnCannotComplete extends PickBasedOnScore {
 		}
 		return bestLibrary;
 	}
-
-	
-	
 
 	private boolean canComplete(Library l, int curTime, int maxTime, Set<Book> alreadyDelivered) {
 		final List<Book> delivered = l.deliver(alreadyDelivered, curTime, maxTime);
