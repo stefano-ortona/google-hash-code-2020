@@ -1,8 +1,6 @@
 package com.google.fantasticgeneration.hashcode_2020.logic;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.OptionalDouble;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +21,14 @@ public class PickBasedOnScoreWithDelta extends PickNextLibrary {
     }
 
     public PickBasedOnScoreWithDelta(List<Library> libraries, Status status) {
+        Collections.sort(libraries, new Comparator<Library>() {
+            @Override
+            public int compare(Library o1, Library o2) {
+                return o2.getBooks().size() - o1.getBooks().size();
+            }
+        });
+
+
 		double average = libraries.stream()
 				.map(new Function<Library, Integer>() {
 					@Override
@@ -61,6 +67,7 @@ public class PickBasedOnScoreWithDelta extends PickNextLibrary {
         if (bestScore == -1) {
             return true;
         }
+
         if ((curScore > bestScore) && ((curScore - bestScore) > DELTA_SCORE)) {
             return true;
         }
