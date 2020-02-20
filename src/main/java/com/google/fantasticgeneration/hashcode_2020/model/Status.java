@@ -40,4 +40,12 @@ public class Status {
 		this.libraries = libraries;
 	}
 
+	@Override
+	public String toString() {
+		return "Status{" +
+				"deliveredBooks=" + deliveredBooks +
+				", libraries=" + libraries +
+				", maxDays=" + maxDays +
+				'}';
+	}
 }

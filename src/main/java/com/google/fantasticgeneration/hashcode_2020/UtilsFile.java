@@ -2,6 +2,7 @@ package com.google.fantasticgeneration.hashcode_2020;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.ProblemContainer;
 import com.google.fantasticgeneration.hashcode_2020.model.Book;
+import com.google.fantasticgeneration.hashcode_2020.model.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,21 @@ public class UtilsFile {
     private ProblemContainer problemContainer;
     private List<Book> books;
     private List<Library> libraries;
+    private Status status;
 
     // 2. generate setters and getters for header and data
+
+    public void setProblemContainer(ProblemContainer problemContainer) {
+        this.problemContainer = problemContainer;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public int getBookAmount() {
         return bookAmount;
@@ -102,12 +116,20 @@ public class UtilsFile {
         String[] firstLineSplit = splitString(firstLine, " ");
         int[] firstLineConverted = convertArrayOfStringToArrayOfInt(firstLineSplit);
 
-        // First row
+        // First row - Book amount, Libraries amount, Available time"
         this.setBookAmount(firstLineConverted[0]);
         this.setLibrariesAmount(firstLineConverted[1]);
         this.setAvailableTime(firstLineConverted[2]);
 
-        // Second row
+        System.out.println("Book amount " + this.getBookAmount());
+        System.out.println("Libraries amount " + this.getLibrariesAmount());
+        System.out.println("Available time" + this.getAvailableTime());
+
+        System.out.println();
+
+
+        // Second row - Books definitions
+        System.out.println("__________________________ Books");
         String secondLine = this.file[1];
         String[] secondLineSplit = splitString(secondLine, " ");
         int[] secondLineConverted = convertArrayOfStringToArrayOfInt(secondLineSplit);
@@ -209,7 +231,7 @@ public class UtilsFile {
     // ====== Do not change below here
 
     //private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-    private static final String RESOURCE_PATH = "src/main/resources/google/com/ortona/hashcode/final_2020/";
+    private static final String RESOURCE_PATH = "src/main/resources/com/google/fantasticgeneration/hashcode_2020/";
     private String[] file;
 
     public void setFile(String[] file) {

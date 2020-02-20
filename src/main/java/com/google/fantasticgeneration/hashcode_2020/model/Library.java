@@ -67,4 +67,15 @@ public class Library {
 		this.parallelBooks = parallelBooks;
 	}
 
+	@Override
+	public String toString() {
+		return "Library{" +
+				"id=" + id +
+				", books=" + books +
+				", signupTime=" + signupTime +
+				", parallelBooks=" + parallelBooks +
+				", signupDay=" + signupDay +
+				", deliveredBooks=" + deliveredBooks +
+				'}';
+	}
 }
