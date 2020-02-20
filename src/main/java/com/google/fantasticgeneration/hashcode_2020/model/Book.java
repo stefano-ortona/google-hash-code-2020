@@ -1,6 +1,6 @@
 package com.google.fantasticgeneration.hashcode_2020.model;
 
-public class Book {
+public class Book implements Comparable<Book> {
 	private int id;
 	private int score;
 
@@ -54,9 +54,14 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book{" +
-				"id=" + id +
-				", score=" + score +
-				'}';
+		return "Book{" + "id=" + id + ", score=" + score + '}';
+	}
+
+	@Override
+	public int compareTo(Book o) {
+		if (this.score == o.score) {
+			return this.id - o.id;
+		}
+		return o.score - this.score;
 	}
 }
