@@ -120,14 +120,14 @@ public class UtilsFile {
         this.setLibrariesAmount(firstLineConverted[1]);
         this.setAvailableTime(firstLineConverted[2]);
 
-        System.out.println("Book amount " + this.getBookAmount());
-        System.out.println("Libraries amount " + this.getLibrariesAmount());
-        System.out.println("Available time " + this.getAvailableTime());
+//        // System.out.println("Book amount " + this.getBookAmount());
+//        // System.out.println("Libraries amount " + this.getLibrariesAmount());
+//        // System.out.println("Available time " + this.getAvailableTime());
 
-        System.out.println();
+//        System// System.out.println();
 
         // Second row - Books definitions
-        System.out.println("______________________________________________ Books");
+        // System.out.println("______________________________________________ Books");
         String secondLine = this.file[1];
         String[] secondLineSplit = splitString(secondLine, " ");
         int[] secondLineConverted = convertArrayOfStringToArrayOfInt(secondLineSplit);
@@ -138,14 +138,14 @@ public class UtilsFile {
             Book b = new Book(i, secondLineConverted[i]);
             books.add(b);
             id2Book.put(i, b);
-            System.out.println("Added book: " + b.toString());
+            // System.out.println("Added book: " + b.toString());
 
         }
         this.setBooks(books);
-        System.out.println();
+        // System.out.println();
 
         // Libraries
-        System.out.println("______________________________________________ Libraries");
+        // System.out.println("______________________________________________ Libraries");
         libraries = new ArrayList<>();
         int index = 1; // two fixed row
         for (int j = 0; j < this.getLibrariesAmount(); j++){
@@ -159,10 +159,10 @@ public class UtilsFile {
             int librarySignupTime = firstRowConverted[1];
             int libraryParallelBooks = firstRowConverted[2];
 
-            System.out.println("Library id: " + j);
-            System.out.println("Books in library: " + bookInLibrary);
-            System.out.println("Sign up time: " + librarySignupTime);
-            System.out.println("Parallel books: " + libraryParallelBooks);
+            // System.out.println("Library id: " + j);
+            // System.out.println("Books in library: " + bookInLibrary);
+            // System.out.println("Sign up time: " + librarySignupTime);
+            // System.out.println("Parallel books: " + libraryParallelBooks);
 
             // Second row: book in library
             index++;
@@ -175,22 +175,22 @@ public class UtilsFile {
                 int id = secondRowSplitConverted[k];
                 Book tempBook = id2Book.get(id);
                 booksToAdd.add(tempBook);
-                System.out.println("...Adding book: " + tempBook.toString());
+                // System.out.println("...Adding book: " + tempBook.toString());
             }
             // public Library(int id, List<Book> books, int signupTime, int parallelBooks) {
             Library library = new Library(j, booksToAdd, librarySignupTime, libraryParallelBooks);
             libraries.add(library);
 
-            System.out.println("Library created: " + library.toString());
-            System.out.println();
+            // System.out.println("Library created: " + library.toString());
+            // System.out.println();
         }
 
         // Status
-        System.out.println("______________________________________________ Status");
+        // System.out.println("______________________________________________ Status");
         // 	public Status(List<Library> libraries, int maxDays) {
         status = new Status(libraries, this.getAvailableTime());
         this.setStatus(status);
-        System.out.println(status.toString());
+        // System.out.println(status.toString());
 
     }
 
