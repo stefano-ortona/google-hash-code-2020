@@ -28,8 +28,8 @@ public class Status {
 		return deliveredBooks;
 	}
 
-	public void addDeliveredBook(Book book) {
-		this.deliveredBooks.add(book);
+	public void addDeliveredBooks(List<Book> books) {
+		this.deliveredBooks.addAll(books);
 	}
 
 	public List<Library> getLibraries() {
