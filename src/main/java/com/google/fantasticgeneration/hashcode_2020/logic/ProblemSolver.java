@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
 
 public class ProblemSolver {
     private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
@@ -38,6 +36,11 @@ public class ProblemSolver {
         SolutionContainer solutionContainer = new SolutionContainer(status.getLibraries(), score);
         return solutionContainer;
     }
+
+
+    /*
+     * Internal methods
+     */
 
     private int calculateScore(List<Library> libraries) {
         int score = 0;
