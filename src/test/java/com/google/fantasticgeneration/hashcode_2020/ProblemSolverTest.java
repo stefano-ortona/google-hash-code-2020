@@ -2,9 +2,7 @@ package com.google.fantasticgeneration.hashcode_2020;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.fantasticgeneration.hashcode_2020.io.ProblemReader;
 import com.google.fantasticgeneration.hashcode_2020.io.ProblemWriter;
+import com.google.fantasticgeneration.hashcode_2020.logic.PickLibraryWeightedSum;
 import com.google.fantasticgeneration.hashcode_2020.logic.ProblemSolver;
 import com.google.fantasticgeneration.hashcode_2020.model.Book;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
@@ -94,8 +93,6 @@ public class ProblemSolverTest {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[0];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
@@ -107,8 +104,6 @@ public class ProblemSolverTest {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[1];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
@@ -117,12 +112,12 @@ public class ProblemSolverTest {
 
 	@Test
 	public void thirdFile() throws IOException {
+		// this file we achieve best solution with 0.22 and 0.78 percentages
+		final ProblemSolver customPS = new ProblemSolver(new PickLibraryWeightedSum(0.78, 0.22));
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[2];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
-		final SolutionContainer sC = SOLVER.solve(c);
+		final SolutionContainer sC = customPS.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
 		LOG.info("Final score for file '{}' is '{}'", file, sC.getScore());
@@ -133,8 +128,6 @@ public class ProblemSolverTest {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[3];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
@@ -146,8 +139,6 @@ public class ProblemSolverTest {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[4];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
@@ -159,22 +150,10 @@ public class ProblemSolverTest {
 		final ProblemReader reader = new ProblemReader();
 		final String file = testFiles[5];
 		final ProblemContainer c = reader.readProblem(file);
-		final int max = computeMaxScore(c.status);
-		System.out.println(max);
 		final SolutionContainer sC = SOLVER.solve(c);
 		final ProblemWriter wC = new ProblemWriter();
 		wC.writeProblem(file.replaceAll("in", "out"), sC);
 		LOG.info("Final score for file '{}' is '{}'", file, sC.getScore());
-	}
-
-	private int computeMaxScore(Status s) {
-		final Set<Book> allB = new HashSet<>();
-		s.getLibraries().forEach(b -> allB.addAll(b.getBooks()));
-		int score = 0;
-		for (final Book b : allB) {
-			score += b.getScore();
-		}
-		return score;
 	}
 
 }

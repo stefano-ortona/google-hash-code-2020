@@ -3,9 +3,6 @@ package com.google.fantasticgeneration.hashcode_2020.logic;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.fantasticgeneration.hashcode_2020.model.Book;
 import com.google.fantasticgeneration.hashcode_2020.model.Library;
 import com.google.fantasticgeneration.hashcode_2020.model.ProblemContainer;
@@ -13,14 +10,20 @@ import com.google.fantasticgeneration.hashcode_2020.model.SolutionContainer;
 import com.google.fantasticgeneration.hashcode_2020.model.Status;
 
 public class ProblemSolver {
-	private static Logger LOG = LoggerFactory.getLogger(ProblemSolver.class);
 
-	private static PickNextLibrary LIBRARY_PICKER = null;
+	private PickNextLibrary LIBRARY_PICKER = null;
+
+	public ProblemSolver(PickNextLibrary strategy) {
+		this.LIBRARY_PICKER = strategy;
+	}
+
+	public ProblemSolver() {
+		// by default use default weighted sum strategy
+		this.LIBRARY_PICKER = new PickLibraryWeightedSum();
+	}
 
 	public SolutionContainer solve(ProblemContainer problem) {
 		final Status status = problem.status;
-
-		LIBRARY_PICKER = new PickBasedOnScoreWithDelta(status.getLibraries(), status);
 
 		for (int currentTime = 0; currentTime < status.getMaxDays();) {
 

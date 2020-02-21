@@ -71,6 +71,11 @@ public class Library implements Comparable<Library> {
 		this.parallelBooks = parallelBooks;
 	}
 
+	public int getCompleteTime() {
+		final int fraction = this.books.size() / this.parallelBooks;
+		return (this.books.size() % this.parallelBooks) == 0 ? fraction : fraction + 1;
+	}
+
 	public List<Book> deliver(Set<Book> alreadyDelivered, int curTime, int maxTime) {
 		curTime += this.signupTime;
 		final List<Book> available = new ArrayList<>();
